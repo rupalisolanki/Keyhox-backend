@@ -1,0 +1,10 @@
+// Prisma schema file for Keyhox database models. Defines datasource and generator. Models will be added in Step 2.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
