@@ -14,4 +14,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: "OK", message: "Keyhox API is live" });
 });
 
+const authRoutes = require('./routes/auth.routes');
+app.use('/api', authRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error'
+  });
+});
+
 module.exports = app;
