@@ -5,10 +5,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/db');
 
+const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret) {
+  throw new Error('JWT_SECRET is not defined');
+}
+
 const register = [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Valid email is required'),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  // @ts-ignore
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -27,10 +33,9 @@ const register = [
       const user = await prisma.user.create({
         data: { name, email, password: hashedPassword }
       });
-
       const token = jwt.sign(
         { userId: user.id, email: user.email, role: user.role },
-        process.env.JWT_SECRET,
+        jwtSecret,
         { expiresIn: '7d' }
       );
 
@@ -49,6 +54,7 @@ const register = [
 const login = [
   body('email').isEmail().withMessage('Valid email is required'),
   body('password').notEmpty().withMessage('Password is required'),
+  // @ts-ignore
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -65,7 +71,7 @@ const login = [
 
       const token = jwt.sign(
         { userId: user.id, email: user.email, role: user.role },
-        process.env.JWT_SECRET,
+        jwtSecret,
         { expiresIn: '7d' }
       );
 
@@ -81,6 +87,7 @@ const login = [
   }
 ];
 
+// @ts-ignore
 const getMe = async (req, res) => {
   try {
     const user = await prisma.user.findUnique({

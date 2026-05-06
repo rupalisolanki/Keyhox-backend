@@ -18,7 +18,8 @@
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.0",
-    "prisma": "^5.6.0"
+    "prisma": "^5.6.0",
+    "slugify": "^1.6.9"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

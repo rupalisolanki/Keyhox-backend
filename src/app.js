@@ -15,9 +15,12 @@ app.get('/api/health', (req, res) => {
 });
 
 const authRoutes = require('./routes/auth.routes');
+const productRoutes = require('./routes/product.routes');
 app.use('/api', authRoutes);
+app.use('/api', productRoutes);
 
 // Global error handler
+// @ts-ignore
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({

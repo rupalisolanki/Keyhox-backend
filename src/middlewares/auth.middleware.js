@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 
+// @ts-ignore
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -12,7 +13,7 @@ const authMiddleware = (req, res, next) => {
   const token = authHeader.substring(7);
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = /** @type {import('jsonwebtoken').JwtPayload} */ (jwt.verify(token, /** @type {string} */ (process.env.JWT_SECRET)));
     req.user = { id: decoded.userId, email: decoded.email, role: decoded.role };
     next();
   } catch (error) {
