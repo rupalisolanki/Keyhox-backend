@@ -3,12 +3,14 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: "OK", message: "Keyhox API is live" });

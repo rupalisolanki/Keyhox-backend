@@ -7,6 +7,8 @@ const authMiddleware = require('../middlewares/auth.middleware');
 // @ts-ignore
 const requireRole = require('../middlewares/role.middleware');
 // @ts-ignore
+const upload = require('../middlewares/upload.middleware');
+// @ts-ignore
 const {
   createProduct,
   getAllProducts,
@@ -23,8 +25,8 @@ router.get('/products', getAllProducts);
 router.get('/products/:slug', getProductBySlug);
 
 // Admin routes
-router.post('/products', authMiddleware, requireRole('ADMIN'), createProduct);
-router.put('/products/:id', authMiddleware, requireRole('ADMIN'), updateProduct);
+router.post('/products', authMiddleware, requireRole('ADMIN'), upload.single('image'), createProduct);
+router.put('/products/:id', authMiddleware, requireRole('ADMIN'), upload.single('image'), updateProduct);
 router.delete('/products/:id', authMiddleware, requireRole('ADMIN'), deleteProduct);
 router.get('/admin/products', authMiddleware, requireRole('ADMIN'), getAdminProducts);
 
