@@ -19,9 +19,11 @@ app.get('/api/health', (req, res) => {
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
 const keyRoutes = require('./routes/key.routes');
+const orderRoutes = require('./routes/order.routes');
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', keyRoutes);
+app.use('/api', orderRoutes);
 
 // Global error handler
 // @ts-ignore
