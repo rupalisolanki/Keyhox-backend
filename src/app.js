@@ -20,10 +20,12 @@ const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
 const keyRoutes = require('./routes/key.routes');
 const orderRoutes = require('./routes/order.routes');
+const supportRoutes = require('./routes/support.routes');
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', keyRoutes);
 app.use('/api', orderRoutes);
+app.use('/api', supportRoutes);
 
 // Global error handler
 // @ts-ignore
