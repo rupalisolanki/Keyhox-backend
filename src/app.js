@@ -7,6 +7,10 @@ const path = require('path');
 
 const app = express();
 
+// Payment routes BEFORE express.json() — webhook needs raw body
+const paymentRoutes = require('./routes/payment.routes');
+app.use('/api', paymentRoutes);
+
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
@@ -21,6 +25,9 @@ const productRoutes = require('./routes/product.routes');
 const keyRoutes = require('./routes/key.routes');
 const orderRoutes = require('./routes/order.routes');
 const supportRoutes = require('./routes/support.routes');
+const paypalRoutes = require('./routes/paypal.routes');
+app.use('/api', paypalRoutes);
+
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', keyRoutes);

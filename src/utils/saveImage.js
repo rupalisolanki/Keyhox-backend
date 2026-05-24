@@ -11,7 +11,7 @@ if (!fs.existsSync(UPLOADS_DIR)) {
  * Saves a base64 image string to disk and returns the public URL path.
  * If value is already a URL (not base64), returns it as-is.
  */
-function saveBase64Image(base64String) {
+function saveBase64Image(/** @type {any} */ base64String) {
   if (!base64String || !base64String.startsWith('data:image/')) {
     return base64String || null;
   }

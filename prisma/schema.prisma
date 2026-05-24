@@ -1,8 +1,9 @@
 // Prisma schema file for Keyhox database models. Defines datasource and generator. Models will be added in Step 2.
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -90,6 +91,7 @@ model Order {
   amount               Decimal     @db.Decimal(10, 2)
   status               OrderStatus @default(PENDING)
   stripePaymentIntentId String?
+  paypalOrderId         String?
   createdAt            DateTime    @default(now())
   updatedAt            DateTime    @updatedAt
   user                 User        @relation(fields: [userId], references: [id])

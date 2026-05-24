@@ -1,4 +1,6 @@
 const prisma = require('../config/db');
+const { getResend } = require('../config/email');
+const { orderSuccessEmail } = require('../utils/emailTemplates');
 
 // POST /api/orders — Purchase a product
 // @ts-ignore
@@ -49,6 +51,21 @@ const createOrder = async (req, res) => {
         licenseKey: key.licenseKey
       };
     });
+
+    try {
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      await getResend().emails.send(orderSuccessEmail({
+        name: user.name,
+        email: user.email,
+        productName: product.name,
+        licenseKey: result.licenseKey,
+        orderId: result.order.id,
+        amount: result.order.amount
+      }));
+      console.log('Order success email sent to:', user.email);
+    } catch (emailErr) {
+      console.error('Email failed (non-critical):', /** @type {any} */ (emailErr).message);
+    }
 
     res.status(201).json({ message: 'Purchase successful', ...result });
   } catch (err) {

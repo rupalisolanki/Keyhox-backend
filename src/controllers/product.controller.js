@@ -4,7 +4,7 @@ const prisma = require('../config/db');
 const { generateUniqueSlug } = require('../utils/slugify');
 
 // Helper to flatten metadata fields onto product object
-const flattenProduct = (product) => {
+const flattenProduct = (/** @type {any} */ product) => {
   const meta = product.metadata || {};
   return {
     ...product,
