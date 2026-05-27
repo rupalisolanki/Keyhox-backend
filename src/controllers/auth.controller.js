@@ -1,4 +1,4 @@
-// Controller for authentication: register, login, getMe.
+// Controller for authentication: register, login, getMe, logout.
 
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -100,4 +100,9 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe };
+// @ts-ignore
+const logout = (req, res) => {
+  res.json({ message: 'Logged out successfully' });
+};
+
+module.exports = { register, login, getMe, logout };
