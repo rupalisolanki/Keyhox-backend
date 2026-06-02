@@ -40,11 +40,17 @@ const register = [
       );
 
       const { password: _, ...userWithoutPassword } = user;
-      res.status(201).json({
-        message: 'Registration successful',
-        token,
-        user: userWithoutPassword
-      });
+      res.status(201)
+        .cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        })
+        .json({
+          message: 'Registration successful',
+          user: userWithoutPassword
+        });
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' });
     }
@@ -76,11 +82,17 @@ const login = [
       );
 
       const { password: _, ...userWithoutPassword } = user;
-      res.json({
-        message: 'Login successful',
-        token,
-        user: userWithoutPassword
-      });
+      res
+        .cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        })
+        .json({
+          message: 'Login successful',
+          user: userWithoutPassword
+        });
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' });
     }
@@ -102,6 +114,7 @@ const getMe = async (req, res) => {
 
 // @ts-ignore
 const logout = (req, res) => {
+  res.clearCookie('token', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' });
   res.json({ message: 'Logged out successfully' });
 };
 

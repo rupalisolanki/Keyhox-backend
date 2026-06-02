@@ -1,16 +1,14 @@
-// Middleware to verify JWT token on protected routes.
+// Middleware to verify JWT token from httpOnly cookie.
 
 const jwt = require('jsonwebtoken');
 
 // @ts-ignore
 const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies?.token;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
-
-  const token = authHeader.substring(7);
 
   try {
     const decoded = /** @type {import('jsonwebtoken').JwtPayload} */ (jwt.verify(token, /** @type {string} */ (process.env.JWT_SECRET)));
